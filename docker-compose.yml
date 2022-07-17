@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  node:
+    image: node
+    container_name: xpi_backend
+    tty: true
+    stdin_open: true
+    command: bash
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    networks:
+      - xpi_network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: db
+
+  db:
+    container_name: xpi_db
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - xpi_network
+    environment:
+      POSTGRES_PASSWORD: password
+
+networks:
+  xpi_network:
+    driver: bridge
