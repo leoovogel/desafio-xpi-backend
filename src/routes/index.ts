@@ -1,8 +1,8 @@
 import { Express } from 'express';
 import validateBody from '../middlewares/validateBody';
-import helloRouter from './hello.router';
+import investmentsRouter from './investments.router';
 
-const routers = [{ '/': helloRouter }];
+const routers = [{ '/investments': investmentsRouter }];
 const middlewares = [validateBody];
 
 export const attachRouters = (app: Express) => {

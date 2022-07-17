@@ -1,1 +1,1 @@
-export * as helloController from './hello.controller';
+export * as investmentsController from './investments.controller';
