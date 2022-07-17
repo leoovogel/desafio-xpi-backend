@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /* eslint-disable no-console */
 import app from './app';
 import 'dotenv/config';

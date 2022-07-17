@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Express } from 'express';
 import validateBody from '../middlewares/validateBody';
 import investmentsRouter from './investments.router';

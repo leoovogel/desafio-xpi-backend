@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import joi from 'joi';
 
 export default {
