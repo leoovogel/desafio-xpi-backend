@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum investment_type {
+  BUY
+  SELL
+}
+
+model account_assets {
+  id         Int    @default(autoincrement())
+  asset_id   Int
+  account_id String
+
+  quantity        Int
+  price           Decimal         @db.Decimal(18, 2)
+  date_time       DateTime        @default(now()) @db.Timestamp(6)
+  investment_type investment_type
+
+  accounts Account @relation(fields: [account_id], references: [id])
+  assets   Asset   @relation(fields: [asset_id], references: [id])
+
+  @@id([id, asset_id, account_id])
+}
+
+model Account {
+  id String @id @default(uuid())
+
+  client_id String @unique
+
+  balance     Decimal  @default(0.00) @db.Decimal(18, 2)
+  investments Decimal  @default(0.00) @db.Decimal(18, 2)
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @updatedAt
+
+  transaction_history Transaction[]
+  account_assets      account_assets[]
+  client              Client           @relation(fields: [client_id], references: [id])
+
+  @@map("accounts")
+}
+
+model Asset {
+  id             Int              @id @default(autoincrement())
+  symbol         String           @unique @db.VarChar(10)
+  name           String           @db.VarChar(50)
+  quantity       Int
+  price          Decimal          @db.Decimal(18, 2)
+  account_assets account_assets[]
+
+  @@map("assets")
+}
+
+model Client {
+  id       String   @id @default(uuid())
+  name     String   @db.VarChar(255)
+  email    String   @unique @db.VarChar(255)
+  password String   @db.VarChar(255)
+  account  Account?
+
+  @@map("clients")
+}
+
+enum transaction_type {
+  DEPOSIT
+  WITHDRAWAL
+}
+
+model Transaction {
+  id               Int              @id @default(autoincrement())
+  account_id       String
+  transaction_type transaction_type
+  amount           Decimal          @db.Decimal(18, 2)
+
+  accounts Account @relation(fields: [account_id], references: [id])
+  @@map("transactions")
+}
