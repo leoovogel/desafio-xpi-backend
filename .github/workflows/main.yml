@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,3 +21,10 @@ jobs:
 
       - name: Run tests
         run: yarn test
+
+      - name: Tests coverage
+        permissions:
+            checks: write
+            pull-requests: write
+            contents: write
+        uses: ArtiomTr/jest-coverage-report-action@v2
