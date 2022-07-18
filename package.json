@@ -7,9 +7,7 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "test": "jest",
     "test:watch": "jest --watchAll --no-coverage",
-    "test:coverage": "jest --coverage",
-    "posttest": "ts-node tests/recreateDatabase.ts",
-    "restore": "ts-node tests/recreateDatabase.ts"
+    "test:coverage": "jest --coverage"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
