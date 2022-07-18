@@ -5,7 +5,7 @@ import joiDTO from '../utils/joiValidations';
 type urlOptions = 'investments/buy';
 
 export default (req: Request, _res: Response, next: NextFunction) => {
-  const urlToValidate = req.originalUrl.slice(1) as urlOptions;
+  const urlToValidate = req.originalUrl?.slice(1) as urlOptions;
   const schema = joiDTO[urlToValidate];
 
   if (req.method === 'GET' || !schema) return next();

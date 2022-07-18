@@ -6,12 +6,13 @@ interface IResponse extends Partial<Response> {
   json: jest.Mock;
 }
 
-export function buildReq() {
+export function buildReq({ ...rest } = {}): Request {
   return {
     body: {},
     params: {},
     query: {},
     headers: {},
+    ...rest,
   } as Request;
 }
 
