@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 class HttpException extends Error {
   status: number;
 
