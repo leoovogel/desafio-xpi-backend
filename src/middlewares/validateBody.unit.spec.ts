@@ -28,5 +28,29 @@ describe('Validate Body middleware', () => {
     expect(next).toHaveBeenCalledWith();
   });
 
-  it.todo('should call the next function with a status and a message error if the body on request is not valid');
+  it('should call the next function without any parameters if the request body is correct', () => {
+    const req = builders.buildReq({ originalUrl: '/investments/buy', method: 'POST', body: {
+      clientCode: '1',
+      assetCode: '1',
+      assetAmount: 1,
+     } });
+    const res = builders.buildRes();
+    const next = builders.buildNext();
+
+    validateBody(req, res, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith();
+  });
+
+  it('should call the next function with a status and a message error if the body on request is not valid', () => {
+    const req = builders.buildReq({ originalUrl: '/investments/buy', method: 'POST', body: { } });
+    const res = builders.buildRes();
+    const next = builders.buildNext();
+
+    validateBody(req, res, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith({ status: 422, message: '"clientCode" is required' });
+  });
 });
