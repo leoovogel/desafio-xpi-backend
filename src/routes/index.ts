@@ -1,9 +1,12 @@
 /* istanbul ignore file */
 import { Express } from 'express';
-import validateBody from '../middlewares/validateBody';
-import investmentsRouter from './investments.router';
 
-const routers = [{ '/investments': investmentsRouter }];
+import investmentsRouter from './investments.router';
+import clientsRouter from './clients.router';
+
+import validateBody from '../middlewares/validateBody';
+
+const routers = [{ '/': clientsRouter }, { '/investments': investmentsRouter }];
 const middlewares = [validateBody];
 
 export const attachRouters = (app: Express) => {

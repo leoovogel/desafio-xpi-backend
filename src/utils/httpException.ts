@@ -2,7 +2,11 @@
 class HttpException extends Error {
   status: number;
 
-  constructor(status: number, message: string) {
+  code?: string;
+
+  meta?: { target: string[] };
+
+  constructor(message: string, status = 500) {
     super(message);
     this.status = status;
   }

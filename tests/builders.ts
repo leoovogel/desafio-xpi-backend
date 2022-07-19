@@ -28,6 +28,6 @@ export function buildNext() {
   return jest.fn() as NextFunction;
 }
 
-export function buildError(status: number, message: string) {
-  return new HttpException(status, message);
+export function buildError(message: string, status: number) {
+  return new HttpException(message, status);
 }
