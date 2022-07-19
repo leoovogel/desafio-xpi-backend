@@ -8,7 +8,7 @@ describe('Error handler middleware', () => {
   });
 
   it('should return status code 400 and error message when an error is triggered', () => {
-    const err = builders.buildError(StatusCodes.BAD_REQUEST, 'Error message');
+    const err = builders.buildError('Error message', StatusCodes.BAD_REQUEST);
     const req = builders.buildReq();
     const res = builders.buildRes();
     const next = builders.buildNext();
