@@ -34,7 +34,7 @@ export async function registerClient({ email, password, name }: IRegisterClient)
     if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
       throw new HttpException('Email already registered', StatusCodes.BAD_REQUEST);
     }
-    throw new HttpException('Email already registered', StatusCodes.BAD_REQUEST);
+    throw new HttpException('Internal Server error');
   }
 }
 
