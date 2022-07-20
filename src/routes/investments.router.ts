@@ -4,4 +4,5 @@ import authMiddleware from '../middlewares/authMiddleware';
 
 export default Router()
   .use(authMiddleware)
-  .post('/buy', investmentsController.buy);
+  .post('/buy', investmentsController.buy)
+  .post('/sell', investmentsController.sell);

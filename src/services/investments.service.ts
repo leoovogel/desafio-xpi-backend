@@ -58,5 +58,59 @@ export async function buyInvestment(client: IClient, { assetId, assetQuantity }:
         symbol: asset.symbol,
         average_price: asset.price,
       },
-    })]);
+    }),
+  ]);
+}
+
+export async function sellInvestment(client: IClient, { assetId, assetQuantity }: IInvestmentBuyRequest) {
+  const clientAccount = await prisma.account.findUnique({
+    where: { client_id: client.id },
+    include: { portfolio: true },
+  });
+
+  if (!clientAccount) throw new HttpException('Client not found', StatusCodes.NOT_FOUND);
+
+  const assetToSell = clientAccount.portfolio.find((portfolio) => portfolio.asset_id === assetId);
+
+  if (!assetToSell) throw new HttpException('Asset not found', StatusCodes.NOT_FOUND);
+
+  await prisma.$transaction(async (prismaTransaction) => {
+    const updatedAsset = await prismaTransaction.portfolio.update({
+      where: {
+        account_id_asset_id: {
+          account_id: clientAccount.id,
+          asset_id: assetId,
+        },
+      },
+      data: {
+        quantity: {
+          decrement: assetQuantity,
+        },
+      },
+    });
+
+    if (updatedAsset.quantity < 0) throw new HttpException('Not enough assets to sell', StatusCodes.BAD_REQUEST);
+
+    if (updatedAsset.quantity === 0) {
+      await prismaTransaction.portfolio.delete({
+        where: {
+          account_id_asset_id: {
+            account_id: clientAccount.id,
+            asset_id: assetId,
+          },
+        },
+      });
+    }
+
+    await prismaTransaction.investments_history.create({
+      data: {
+        account_id: clientAccount.id,
+        asset_id: assetId,
+        investment_type: 'SELL',
+        // TODO: get the price from the asset
+        price: 10,
+        quantity: assetQuantity,
+      },
+    });
+  });
 }
