@@ -29,8 +29,6 @@ async function main() {
     ]
   });
 
-  const assets = await prisma.asset.findMany();
-
   accounts.forEach(async (account) => {
     await prisma.transaction_history.createMany({
       data: [
@@ -39,14 +37,6 @@ async function main() {
         { account_id: account.id, value: 100, transaction_type: 'WITHDRAWAL' },
       ]
     });
-
-    await prisma.investments_history.createMany({
-      data: [
-        { account_id: account.id, asset_id: assets[0].id, investment_type: 'BUY', price: assets[0].price, quantity: 100 },
-        { account_id: account.id, asset_id: assets[1].id, investment_type: 'BUY', price: assets[1].price, quantity: 100 },
-        { account_id: account.id, asset_id: assets[2].id, investment_type: 'BUY', price: assets[2].price, quantity: 100 },
-      ]
-    })
   })
 
 }
