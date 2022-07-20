@@ -15,6 +15,11 @@ export default {
 
   'investments/buy': joi.object().keys({
     assetId: joi.number().required(),
-    assetQuantity: joi.number().required(),
+    assetQuantity: joi.number().min(1).required(),
+  }),
+
+  'investments/sell': joi.object().keys({
+    assetId: joi.number().required(),
+    assetQuantity: joi.number().min(1).required(),
   }),
 };
