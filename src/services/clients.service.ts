@@ -25,9 +25,7 @@ export async function registerClient({ email, password, name }: IRegisterClient)
         email,
         password: encryptedPassword,
         name,
-        account: {
-          create: { },
-        },
+        Account: { create: { } },
       },
     });
   } catch (error) {

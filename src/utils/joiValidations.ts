@@ -14,8 +14,7 @@ export default {
   }),
 
   'investments/buy': joi.object().keys({
-    clientCode: joi.string().required(),
-    assetCode: joi.string().required(),
-    assetAmount: joi.number().required(),
+    assetId: joi.number().required(),
+    assetQuantity: joi.number().required(),
   }),
 };
