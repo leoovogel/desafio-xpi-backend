@@ -19,6 +19,7 @@ Table accounts {
   updated_at DateTime [not null]
   transactions transactions_history [not null]
   investments investments_history [not null]
+  portfolio portfolio [not null]
   client clients [not null]
 }
 
@@ -38,6 +39,7 @@ Table assets {
   available_quantity Int [not null]
   price Decimal [not null]
   investments_history investments_history [not null]
+  portfolio portfolio [not null]
 }
 
 Table investments_history {
@@ -50,6 +52,23 @@ Table investments_history {
   created_at DateTime [default: `now()`, not null]
   Asset assets
   Account accounts
+}
+
+Table portfolio {
+  id Int [pk, increment]
+  account_id String [not null]
+  asset_id Int [not null]
+  symbol String [not null]
+  quantity Int [not null]
+  average_price Decimal [not null]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  Asset assets
+  Account accounts
+
+  indexes {
+    (account_id, asset_id) [unique]
+  }
 }
 
 Enum investment_type {
@@ -69,3 +88,7 @@ Ref: transactions_history.account_id > accounts.id
 Ref: investments_history.asset_id > assets.id
 
 Ref: investments_history.account_id > accounts.id
+
+Ref: portfolio.asset_id > assets.id
+
+Ref: portfolio.account_id > accounts.id

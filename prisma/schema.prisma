@@ -45,6 +45,7 @@ model Account {
 
   transactions Transaction_history[]
   investments  Investments_history[]
+  portfolio    Portfolio[]
 
   client Client @relation(fields: [client_id], references: [id])
 
@@ -74,6 +75,7 @@ model Asset {
   price              Decimal @db.Decimal(10, 2)
 
   investments_history Investments_history[]
+  portfolio           Portfolio[]
 
   @@map("assets")
 }
@@ -89,8 +91,27 @@ model Investments_history {
   price           Decimal         @db.Decimal(10, 2)
   created_at      DateTime        @default(now())
 
-  Asset     Asset?   @relation(fields: [asset_id], references: [id])
-  Account   Account? @relation(fields: [account_id], references: [id])
+  Asset   Asset?   @relation(fields: [asset_id], references: [id])
+  Account Account? @relation(fields: [account_id], references: [id])
 
   @@map("investments_history")
+}
+
+model Portfolio {
+  id Int @id @default(autoincrement())
+
+  account_id String
+  asset_id   Int
+
+  symbol        String   @db.VarChar(10)
+  quantity      Int
+  average_price Decimal  @db.Decimal(10, 2)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  Asset   Asset?   @relation(fields: [asset_id], references: [id])
+  Account Account? @relation(fields: [account_id], references: [id])
+
+  @@unique([account_id, asset_id])
+  @@map("portfolio")
 }
