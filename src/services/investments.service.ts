@@ -27,35 +27,36 @@ export async function buyInvestment(client: IClient, { assetId, assetQuantity }:
     throw new HttpException('assetQuantity greater than the available quantity', StatusCodes.BAD_REQUEST);
   }
 
-  await prisma.investments_history.create({
-    data: {
-      account_id: clientAccount.id,
-      asset_id: asset.id,
-      investment_type: 'BUY',
-      price: asset.price,
-      quantity: assetQuantity,
-    },
-  });
-
-  // TODO on update, create function to update average_price and available_quantity
-  await prisma.portfolio.upsert({
-    where: {
-      account_id_asset_id: {
+  await prisma.$transaction([
+    prisma.investments_history.create({
+      data: {
         account_id: clientAccount.id,
         asset_id: asset.id,
+        investment_type: 'BUY',
+        price: asset.price,
+        quantity: assetQuantity,
       },
-    },
-    update: {
-      quantity: {
-        increment: assetQuantity,
+    }),
+
+    // TODO on update, create function to update average_price and available_quantity
+    prisma.portfolio.upsert({
+      where: {
+        account_id_asset_id: {
+          account_id: clientAccount.id,
+          asset_id: asset.id,
+        },
       },
-    },
-    create: {
-      account_id: clientAccount.id,
-      asset_id: asset.id,
-      quantity: assetQuantity,
-      symbol: asset.symbol,
-      average_price: asset.price,
-    },
-  });
+      update: {
+        quantity: {
+          increment: assetQuantity,
+        },
+      },
+      create: {
+        account_id: clientAccount.id,
+        asset_id: asset.id,
+        quantity: assetQuantity,
+        symbol: asset.symbol,
+        average_price: asset.price,
+      },
+    })]);
 }
