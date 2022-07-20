@@ -13,12 +13,12 @@ Table clients {
 Table accounts {
   id String [pk]
   client_id String [unique, not null]
-  balance Decimal [not null, default: 0]
-  investments Decimal [not null, default: 0]
+  balance_value Decimal [not null, default: 0]
+  investments_value Decimal [not null, default: 0]
   created_at DateTime [default: `now()`, not null]
   updated_at DateTime [not null]
   transactions transactions_history [not null]
-  portfolio portfolio [not null]
+  investments investments_history [not null]
   client clients [not null]
 }
 
@@ -29,16 +29,6 @@ Table transactions_history {
   transaction_type transaction_type [not null]
   created_at DateTime [default: `now()`, not null]
   Account accounts [not null]
-}
-
-Table portfolio {
-  id String [pk]
-  account_id String [not null]
-  symbol String [not null]
-  quantity Int [not null]
-  average_price Decimal [not null]
-  investments_history investments_history [not null]
-  account accounts [not null]
 }
 
 Table assets {
@@ -52,14 +42,14 @@ Table assets {
 
 Table investments_history {
   id Int [pk, increment]
-  portfolio_id String [not null]
+  account_id String [not null]
   asset_id Int [not null]
   investment_type investment_type [not null]
   quantity Int [not null]
   price Decimal [not null]
   created_at DateTime [default: `now()`, not null]
-  Portfolio portfolio
   Asset assets
+  Account accounts
 }
 
 Enum investment_type {
@@ -76,8 +66,6 @@ Ref: accounts.client_id - clients.id
 
 Ref: transactions_history.account_id > accounts.id
 
-Ref: portfolio.account_id > accounts.id
-
-Ref: investments_history.portfolio_id > portfolio.id
-
 Ref: investments_history.asset_id > assets.id
+
+Ref: investments_history.account_id > accounts.id

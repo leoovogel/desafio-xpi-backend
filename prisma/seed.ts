@@ -32,14 +32,6 @@ async function main() {
   const assets = await prisma.asset.findMany();
 
   accounts.forEach(async (account) => {
-    await prisma.portfolio.createMany({
-      data: [
-        { account_id: account.id, symbol: 'ITSA4', quantity: 10, average_price: 12.0 },
-        { account_id: account.id, symbol: 'B3SA3', quantity: 30, average_price: 15.0 },
-        { account_id: account.id, symbol: 'ABEV3', quantity: 30, average_price: 12.0 },
-      ]
-    });
-
     await prisma.transaction_history.createMany({
       data: [
         { account_id: account.id, value: 200, transaction_type: 'DEPOSIT' },
@@ -47,19 +39,16 @@ async function main() {
         { account_id: account.id, value: 100, transaction_type: 'WITHDRAWAL' },
       ]
     });
-  })
 
-  const portfolios = await prisma.portfolio.findMany();
-
-  portfolios.forEach(async (portfolio) => {
     await prisma.investments_history.createMany({
       data: [
-        { portfolio_id: portfolio.id, asset_id: assets[0].id, quantity: 10, price: 12.0, investment_type: 'BUY' },
-        { portfolio_id: portfolio.id, asset_id: assets[1].id, quantity: 20, price: 15.0, investment_type: 'BUY' },
-        { portfolio_id: portfolio.id, asset_id: assets[2].id, quantity: 30, price: 12.0, investment_type: 'BUY' },
+        { account_id: account.id, asset_id: assets[0].id, investment_type: 'BUY', price: assets[0].price, quantity: 100 },
+        { account_id: account.id, asset_id: assets[1].id, investment_type: 'BUY', price: assets[1].price, quantity: 100 },
+        { account_id: account.id, asset_id: assets[2].id, investment_type: 'BUY', price: assets[2].price, quantity: 100 },
       ]
     })
   })
+
 }
 
 main();

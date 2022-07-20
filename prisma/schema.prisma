@@ -38,13 +38,13 @@ model Account {
 
   client_id String @unique
 
-  balance     Decimal  @default(0) @db.Decimal(10, 2)
-  investments Decimal  @default(0) @db.Decimal(10, 2)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  balance_value     Decimal  @default(0) @db.Decimal(10, 2)
+  investments_value Decimal  @default(0) @db.Decimal(10, 2)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
 
   transactions Transaction_history[]
-  portfolio    Portfolio[]
+  investments  Investments_history[]
 
   client Client @relation(fields: [client_id], references: [id])
 
@@ -65,22 +65,6 @@ model Transaction_history {
   @@map("transactions_history")
 }
 
-model Portfolio {
-  id String @id @default(cuid())
-
-  account_id String
-  symbol     String @db.VarChar(10)
-
-  quantity      Int
-  average_price Decimal @db.Decimal(10, 2)
-
-  investments_history Investments_history[]
-
-  account Account @relation(fields: [account_id], references: [id])
-
-  @@map("portfolio")
-}
-
 model Asset {
   id Int @id @default(autoincrement())
 
@@ -97,16 +81,16 @@ model Asset {
 model Investments_history {
   id Int @id @default(autoincrement())
 
-  portfolio_id String
-  asset_id     Int
+  account_id String
+  asset_id   Int
 
   investment_type investment_type
   quantity        Int
   price           Decimal         @db.Decimal(10, 2)
   created_at      DateTime        @default(now())
 
-  Portfolio Portfolio? @relation(fields: [portfolio_id], references: [id])
-  Asset     Asset?     @relation(fields: [asset_id], references: [id])
+  Asset     Asset?   @relation(fields: [asset_id], references: [id])
+  Account   Account? @relation(fields: [account_id], references: [id])
 
   @@map("investments_history")
 }
