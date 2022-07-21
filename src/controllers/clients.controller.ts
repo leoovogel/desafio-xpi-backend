@@ -8,6 +8,6 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const client = await clientService.loginClient(req.body);
-  return res.status(StatusCodes.OK).json(client);
+  const token = await clientService.loginClient(req.body);
+  return res.status(StatusCodes.OK).json({ token });
 };
