@@ -30,9 +30,8 @@ describe('Validate Body middleware', () => {
 
   it('should call the next function without any parameters if the request body is correct', () => {
     const req = builders.buildReq({ originalUrl: '/investments/buy', method: 'POST', body: {
-      clientCode: '1',
-      assetCode: '1',
-      assetAmount: 1,
+      assetId: 1,
+      assetQuantity: 1,
      } });
     const res = builders.buildRes();
     const next = builders.buildNext();
@@ -51,6 +50,6 @@ describe('Validate Body middleware', () => {
     validateBody(req, res, next);
 
     expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith({ status: 422, message: '"clientCode" is required' });
+    expect(next).toHaveBeenCalledWith({ status: 422, message: '"assetId" is required' });
   });
 });
