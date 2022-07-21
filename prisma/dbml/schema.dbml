@@ -13,8 +13,9 @@ Table clients {
 Table accounts {
   id String [pk]
   client_id String [unique, not null]
-  balance_value Decimal [not null, default: 0]
+  available_balance Decimal [not null, default: 0]
   investments_value Decimal [not null, default: 0]
+  total_assets Decimal [not null, default: 0]
   created_at DateTime [default: `now()`, not null]
   updated_at DateTime [not null]
   transactions transactions_history [not null]

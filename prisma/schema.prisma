@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["interactiveTransactions"]
 }
 
@@ -39,8 +39,9 @@ model Account {
 
   client_id String @unique
 
-  balance_value     Decimal  @default(0) @db.Decimal(10, 2)
+  available_balance Decimal  @default(0) @db.Decimal(10, 2)
   investments_value Decimal  @default(0) @db.Decimal(10, 2)
+  total_assets      Decimal  @default(0) @db.Decimal(10, 2)
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
 
