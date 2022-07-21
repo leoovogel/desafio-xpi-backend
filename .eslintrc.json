@@ -61,14 +61,14 @@
     "max-lines-per-function": [
       "error",
       {
-        "max": 20,
+        "max": 50,
         "skipBlankLines": true,
         "skipComments": true
       }
     ],
     "max-len": [
       "error",
-      100,
+      140,
       {
         "ignoreComments": true
       }

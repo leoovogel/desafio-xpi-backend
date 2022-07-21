@@ -1,0 +1,95 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table clients {
+  id String [pk]
+  name String [not null]
+  email String [unique, not null]
+  password String [not null]
+  Account accounts
+}
+
+Table accounts {
+  id String [pk]
+  client_id String [unique, not null]
+  available_balance Decimal [not null, default: 0]
+  investments_value Decimal [not null, default: 0]
+  total_assets Decimal [not null, default: 0]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  transactions transactions_history [not null]
+  investments investments_history [not null]
+  portfolio portfolio [not null]
+  client clients [not null]
+}
+
+Table transactions_history {
+  id Int [pk, increment]
+  account_id String [not null]
+  value Decimal [not null]
+  transaction_type transaction_type [not null]
+  created_at DateTime [default: `now()`, not null]
+  Account accounts [not null]
+}
+
+Table assets {
+  id Int [pk, increment]
+  symbol String [not null]
+  name String [not null]
+  available_quantity Int [not null]
+  price Decimal [not null]
+  investments_history investments_history [not null]
+  portfolio portfolio [not null]
+}
+
+Table investments_history {
+  id Int [pk, increment]
+  account_id String [not null]
+  asset_id Int [not null]
+  investment_type investment_type [not null]
+  quantity Int [not null]
+  price Decimal [not null]
+  created_at DateTime [default: `now()`, not null]
+  Asset assets
+  Account accounts
+}
+
+Table portfolio {
+  id Int [pk, increment]
+  account_id String [not null]
+  asset_id Int [not null]
+  symbol String [not null]
+  quantity Int [not null]
+  average_price Decimal [not null]
+  created_at DateTime [default: `now()`, not null]
+  updated_at DateTime [not null]
+  Asset assets
+  Account accounts
+
+  indexes {
+    (account_id, asset_id) [unique]
+  }
+}
+
+Enum investment_type {
+  BUY
+  SELL
+}
+
+Enum transaction_type {
+  DEPOSIT
+  WITHDRAWAL
+}
+
+Ref: accounts.client_id - clients.id
+
+Ref: transactions_history.account_id > accounts.id
+
+Ref: investments_history.asset_id > assets.id
+
+Ref: investments_history.account_id > accounts.id
+
+Ref: portfolio.asset_id > assets.id
+
+Ref: portfolio.account_id > accounts.id

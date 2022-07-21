@@ -4,6 +4,7 @@ import HttpException from '../src/utils/httpException';
 interface IResponse extends Partial<Response> {
   status: jest.Mock;
   json: jest.Mock;
+  end: jest.Mock;
 }
 
 export function buildReq({ ...rest } = {}): Request {
@@ -16,10 +17,13 @@ export function buildReq({ ...rest } = {}): Request {
   } as Request;
 }
 
-export function buildRes() {
+export function buildRes({ ...rest } = {}) {
   const res: IResponse = {
     status: jest.fn(() => res),
     json: jest.fn(() => res),
+    end: jest.fn(() => res),
+    locals: {},
+    ...rest,
   };
   return res as Response;
 }

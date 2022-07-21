@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Router } from 'express';
 import { clientsController } from '../controllers';
 

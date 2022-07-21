@@ -1,8 +1,16 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { prisma } from '../database/prismaClient';
+
+import * as investmentService from '../services/investments.service';
 
 export const buy = async (req: Request, res: Response) => {
-  const result = await prisma.client.findMany();
-  return res.status(StatusCodes.OK).json({ result });
+  const { client } = res.locals;
+  const result = await investmentService.buyInvestment(client, req.body);
+  return res.status(StatusCodes.OK).json({ successful_purchase: result });
+};
+
+export const sell = async (req: Request, res: Response) => {
+  const { client } = res.locals;
+  const result = await investmentService.sellInvestment(client, req.body);
+  return res.status(StatusCodes.OK).json({ successful_sale: result });
 };
