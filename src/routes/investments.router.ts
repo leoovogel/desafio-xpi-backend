@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Router } from 'express';
 import { investmentsController } from '../controllers';
 import authMiddleware from '../middlewares/authMiddleware';

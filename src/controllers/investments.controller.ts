@@ -6,11 +6,11 @@ import * as investmentService from '../services/investments.service';
 export const buy = async (req: Request, res: Response) => {
   const { client } = res.locals;
   const result = await investmentService.buyInvestment(client, req.body);
-  return res.status(StatusCodes.OK).json({ result });
+  return res.status(StatusCodes.OK).json({ successful_purchase: result });
 };
 
 export const sell = async (req: Request, res: Response) => {
   const { client } = res.locals;
   const result = await investmentService.sellInvestment(client, req.body);
-  return res.status(StatusCodes.OK).json({ result });
+  return res.status(StatusCodes.OK).json({ successful_sale: result });
 };
