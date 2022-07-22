@@ -53,6 +53,13 @@ const mockAssetPortfolio = {
   updated_at: '2022-07-21T12:50:21.788Z'  as unknown as Date
 }
 
+const mockTransactionReturn = {
+  symbol: 'ITSA4',
+  quantity: 1000,
+  price: 12,
+  totalPrice: 12000,
+}
+
 describe('Investments service -> buyInvestment', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -133,30 +140,26 @@ describe('Investments service -> sellInvestment', () => {
     }).rejects.toThrow('Asset not found');
   });
 
-  // TODO HOW TO TEST THIS??????
-  it.todo('should throws an error if the quantity desired to sell is greater than the quantity available');
-  it.todo('should delete the investment from the client portfolio if the quantity sold is equal to the quantity available');
-  it.skip('should sell an investment and return the investment details', async () => {
-    jest.spyOn(prisma.account, "findUnique").mockResolvedValue(mockAccount);
-    jest.spyOn(prisma.asset, "findUnique").mockResolvedValue(mockAsset);
-    jest.spyOn(prisma, "$transaction").mockResolvedValue([mockAssetHistory, mockAssetPortfolio]);
-    jest.spyOn(prisma.investments_history, "create").mockReturnValue(jest.fn() as never);
-    jest.spyOn(prisma.portfolio, "upsert").mockReturnValue(jest.fn() as never);
+  it('should sell an investment and return the investment details', async () => {
+    jest.spyOn(prisma.account, "findUnique").mockResolvedValue({
+      ...mockAccount, portfolio: [mockAssetPortfolio]
+    } as (Account & { portfolio: Portfolio[] }));
+    jest.spyOn(prisma, "$transaction").mockResolvedValue(mockTransactionReturn);
 
-    await sellInvestment(mockClient, mockInvestmentBody);
+    const result = await sellInvestment(mockClient, mockInvestmentBody);
 
     expect(prisma.account.findUnique).toHaveBeenCalledTimes(1);
     expect(prisma.account.findUnique).toHaveBeenCalledWith({
       where: { client_id: mockClient.id },
-    });
-
-    expect(prisma.asset.findUnique).toHaveBeenCalledTimes(1);
-    expect(prisma.asset.findUnique).toHaveBeenCalledWith({
-      where: { id: mockInvestmentBody.assetId },
+      include: { portfolio: true },
     });
 
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(prisma.investments_history.create).toHaveBeenCalledTimes(1);
-    expect(prisma.portfolio.upsert).toHaveBeenCalledTimes(1);
+    
+    expect(result).toEqual(mockTransactionReturn);
   });
+
+  // TODO HOW TO TEST THIS??????
+  // it.todo('should throws an error if the quantity desired to sell is greater than the quantity available');
+  // it.todo('should delete the investment from the client portfolio if the quantity sold is equal to the quantity available');
 });
