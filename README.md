@@ -6,9 +6,8 @@
 - [X] POST /account/deposit
 - [X] POST /account/withdraw
 - [X] GET /account/:id/balance (criado sem o param id, usando o id vindo do token)
-- [ ] GET by client /account/:id/assets
+- [X] GET by client /account/:id/assets (criado sem o param id, usando o id vindo do token)
 - [ ] GET by assets /assets/:id
-- [ ] GET portfólio /portfolio/:id
 
 - [ ] GET all assets /assets
 - [ ] GET account info /account/:id
@@ -20,7 +19,7 @@
 - [ ] Todos os endpoints obrigatórios feitos
 
 ### Requisitos bonus:
-- [ ] Testes unitários (pelo menos 75% de cobertura)
+- [X] Testes unitários (pelo menos 75% de cobertura)
 - [ ] Deploy da api
 - [X] Autenticação e autorização com JWT
 - [ ] Documentação com Swagger

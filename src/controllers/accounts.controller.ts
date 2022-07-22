@@ -21,3 +21,9 @@ export const getBalance = async (_req: Request, res: Response) => {
   const result = await accountService.getAccountBalance(client);
   return res.status(StatusCodes.OK).json(result);
 };
+
+export const getAssets = async (_req: Request, res: Response) => {
+  const { client } = res.locals;
+  const result = await accountService.getAccountAssets(client);
+  return res.status(StatusCodes.OK).json(result);
+};

@@ -77,3 +77,12 @@ export async function getAccountBalance(client: IClient) {
     totalAssets: clientAccount.total_assets,
   };
 }
+
+export async function getAccountAssets(client: IClient) {
+  const clientAccount = await prisma.account.findUniqueOrThrow({
+    where: { client_id: client.id },
+    include: { portfolio: true },
+  });
+
+  return clientAccount.portfolio;
+}
