@@ -1,13 +1,37 @@
 import { Decimal } from "@prisma/client/runtime";
 import { buildReq, buildRes } from "../../tests/builders";
 import * as accountService from '../services/accounts.service';
-import { deposit, getBalance, withdrawal } from "./accounts.controller";
+import { deposit, getAssets, getBalance, withdrawal } from "./accounts.controller";
 
 const mockClient = {
   id: 'clientId',
   name: 'Client Name',
   email: 'client@name.com',
 }
+
+const mockPortfolio = [
+  {
+      "id": 1,
+      "account_id": "cl5w8ryhv0003y9njg9jp3y01",
+      "asset_id": 1,
+      "symbol": "ITSA4",
+      "quantity": 500,
+      "average_price": "12",
+      "created_at": "2022-07-22T10:01:12.015Z",
+      "updated_at": "2022-07-22T10:01:12.015Z"
+  },
+  {
+      "id": 2,
+      "account_id": "cl5w8ryhv0003y9njg9jp3y01",
+      "asset_id": 2,
+      "symbol": "B3SA3",
+      "quantity": 300,
+      "average_price": "15",
+      "created_at": "2022-07-22T10:01:19.638Z",
+      "updated_at": "2022-07-22T10:01:19.638Z"
+  },
+]
+
 
 describe('Accounts controller -> deposit', () => {
   it('should return status 200 and object with message "Deposit successful"', async () => {
@@ -74,5 +98,25 @@ describe('Accounts controller -> getBalance', () => {
       investmentsValue: 50,
       totalAssets: 150,
     })
+  });
+});
+
+describe('Accounts controller -> getAssets', () => {
+  it('should return status 200 and object with availableBalance, investmentsValue and totalAssets', async () => {
+    const req = buildReq()
+    const res = buildRes({ locals: { client: mockClient } })
+
+    jest.spyOn(accountService, 'getAccountAssets').mockResolvedValueOnce(mockPortfolio as never)
+
+    await getAssets(req, res)
+
+    expect(accountService.getAccountAssets).toHaveBeenCalledTimes(1)
+    expect(accountService.getAccountAssets).toHaveBeenCalledWith(mockClient)
+
+    expect(res.status).toHaveBeenCalledTimes(1)
+    expect(res.status).toHaveBeenCalledWith(200)
+
+    expect(res.json).toHaveBeenCalledTimes(1)
+    expect(res.json).toHaveBeenCalledWith(mockPortfolio)
   });
 });
