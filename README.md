@@ -5,7 +5,7 @@
 - [X] POST /investments/sell
 - [X] POST /account/deposit
 - [X] POST /account/withdraw
-- [ ] GET /account/:id/balance
+- [X] GET /account/:id/balance (criado sem o param id, usando o id vindo do token)
 - [ ] GET by client /account/:id/assets
 - [ ] GET by assets /assets/:id
 - [ ] GET portfólio /portfolio/:id

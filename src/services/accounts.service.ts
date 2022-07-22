@@ -65,3 +65,15 @@ export async function accountWithdrawal(client: IClient, value: number) {
 
   return { message: 'Withdrawal successful' };
 }
+
+export async function getAccountBalance(client: IClient) {
+  const clientAccount = await prisma.account.findUniqueOrThrow({
+    where: { client_id: client.id },
+  });
+
+  return {
+    availableBalance: clientAccount.available_balance,
+    investmentsValue: clientAccount.investments_value,
+    totalAssets: clientAccount.total_assets,
+  };
+}

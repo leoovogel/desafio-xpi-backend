@@ -15,3 +15,9 @@ export const withdrawal = async (req: Request, res: Response) => {
   const result = await accountService.accountWithdrawal(client, value);
   return res.status(StatusCodes.OK).json(result);
 };
+
+export const getBalance = async (_req: Request, res: Response) => {
+  const { client } = res.locals;
+  const result = await accountService.getAccountBalance(client);
+  return res.status(StatusCodes.OK).json(result);
+};
