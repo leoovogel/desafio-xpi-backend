@@ -22,4 +22,12 @@ export default {
     assetId: joi.number().required(),
     assetQuantity: joi.number().min(1).required(),
   }),
+
+  'account/deposit': joi.object().keys({
+    value: joi.number().min(1).required(),
+  }),
+
+  'account/withdrawal': joi.object().keys({
+    value: joi.number().min(1).required(),
+  }),
 };
