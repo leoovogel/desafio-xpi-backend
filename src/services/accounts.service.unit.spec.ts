@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime";
 import { prisma } from "../database/prismaClient";
-import { accountDeposit, accountWithdrawal } from "./accounts.service";
+import { accountDeposit, accountWithdrawal, getAccountBalance } from "./accounts.service";
 
 const mockClient = {
   id: "clientId",
@@ -13,8 +13,8 @@ const mockAccount = {
   id: "accountId",
   client_id: "clientId",
   available_balance: 100 as unknown as Decimal,
-  investments_value: 100 as unknown as Decimal,
-  total_assets: 100 as unknown as Decimal,
+  investments_value: 150 as unknown as Decimal,
+  total_assets: 200 as unknown as Decimal,
   created_at: "2020-01-01" as unknown as Date,
   updated_at: "2020-01-01" as unknown as Date,
 };
@@ -97,4 +97,35 @@ describe('Account service -> accountWithdrawal', () => {
 
   //   expect(result).not.toEqual({ message: 'Withdrawal successful' });
   // });
+});
+
+describe('Account service -> getAccountBalance', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should return the account balance', async () => {
+    jest.spyOn(prisma.account, "findUniqueOrThrow").mockResolvedValueOnce(mockAccount);
+
+    const result = await getAccountBalance(mockClient);
+
+    expect(prisma.account.findUniqueOrThrow).toHaveBeenCalledTimes(1);
+    expect(prisma.account.findUniqueOrThrow).toHaveBeenCalledWith({
+      where: { client_id: mockClient.id },
+    });
+
+    expect(result).toEqual({
+      availableBalance: 100,
+      investmentsValue: 150,
+      totalAssets: 200,
+    });
+  });
+
+  it('should throws an error if the client is not found by id', async () => {
+    jest.spyOn(prisma.account, "findUniqueOrThrow").mockRejectedValueOnce(new Error('Client not found'));
+
+    expect(async () => {
+      await getAccountBalance(mockClient);
+    }).rejects.toThrow('Client not found');
+  });
 });

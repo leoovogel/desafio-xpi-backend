@@ -1,6 +1,7 @@
+import { Decimal } from "@prisma/client/runtime";
 import { buildReq, buildRes } from "../../tests/builders";
 import * as accountService from '../services/accounts.service';
-import { deposit, withdrawal } from "./accounts.controller";
+import { deposit, getBalance, withdrawal } from "./accounts.controller";
 
 const mockClient = {
   id: 'clientId',
@@ -45,5 +46,33 @@ describe('Accounts controller -> withdrawal', () => {
 
     expect(res.json).toHaveBeenCalledTimes(1)
     expect(res.json).toHaveBeenCalledWith({ message: 'Withdrawal successful' })
+  });
+});
+
+describe('Accounts controller -> getBalance', () => {
+  it('should return status 200 and object with availableBalance, investmentsValue and totalAssets', async () => {
+    const req = buildReq()
+    const res = buildRes({ locals: { client: mockClient } })
+
+    jest.spyOn(accountService, 'getAccountBalance').mockResolvedValueOnce({
+      availableBalance: 100 as unknown as Decimal,
+      investmentsValue: 50 as unknown as Decimal,
+      totalAssets: 150 as unknown as Decimal,
+    })
+
+    await getBalance(req, res)
+
+    expect(accountService.getAccountBalance).toHaveBeenCalledTimes(1)
+    expect(accountService.getAccountBalance).toHaveBeenCalledWith(mockClient)
+
+    expect(res.status).toHaveBeenCalledTimes(1)
+    expect(res.status).toHaveBeenCalledWith(200)
+
+    expect(res.json).toHaveBeenCalledTimes(1)
+    expect(res.json).toHaveBeenCalledWith({
+      availableBalance: 100,
+      investmentsValue: 50,
+      totalAssets: 150,
+    })
   });
 });
