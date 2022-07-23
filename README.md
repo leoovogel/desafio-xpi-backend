@@ -11,13 +11,12 @@
 
 - [X] GET all assets /assets
 - [ ] GET assets /assets/symbol (query params: symbol)
-- [ ] GET account info /account/:id
 
 ---
 ### Requisitos obrigatórios:
 - [ ] Readme com explicação sobre abordagens e decisões tomadas
 - [ ] Readme com instrução de como executar a aplicação
-- [ ] Todos os endpoints obrigatórios feitos
+- [X] Todos os endpoints obrigatórios feitos
 
 ### Requisitos bonus:
 - [X] Testes unitários (pelo menos 75% de cobertura)
