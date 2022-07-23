@@ -7,3 +7,8 @@ export const getById = async (req: Request, res: Response) => {
   const result = await assetService.getAssetById(assetId);
   return res.status(StatusCodes.OK).json(result);
 };
+
+export const getAll = async (_req: Request, res: Response) => {
+  const result = await assetService.getAllAssets();
+  return res.status(StatusCodes.OK).json(result);
+};

@@ -9,7 +9,7 @@
 - [X] GET by client /account/:id/assets (criado sem o param id, usando o id vindo do token)
 - [X] GET by assets /assets/:id
 
-- [ ] GET all assets /assets
+- [X] GET all assets /assets
 - [ ] GET assets /assets/symbol (query params: symbol)
 - [ ] GET account info /account/:id
 
