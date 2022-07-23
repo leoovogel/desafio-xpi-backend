@@ -1,31 +1,16 @@
 import { buildReq, buildRes } from "../builders";
 import { getAll, getById } from "../../src/controllers/assets.controller";
 import * as assetService from "../../src/services/assets.service";
+import { mockAsset1, mockAsset2 } from "../mocks";
 
-const mockAsset = {
-  "id": 1,
-  "symbol": "ITSA4",
-  "name": "Itausa",
-  "available_quantity": 20000,
-  "price": "12"
-}
-
-const mockAsset2 = {
-  "id": 2,
-  "symbol": "ABEV3",
-  "name": "Ambev",
-  "available_quantity": 40000,
-  "price": "13"
-}
-
-const mockAssetsList = [mockAsset, mockAsset2];
+const mockAssetsList = [mockAsset1, mockAsset2];
 
 describe('Assets controller -> getById', () => {
   it('should return status 200 and the asset info', async () => {
     const req = buildReq({ params: { id: '1' } });
     const res = buildRes();
 
-    jest.spyOn(assetService, 'getAssetById').mockResolvedValueOnce(mockAsset as never)
+    jest.spyOn(assetService, 'getAssetById').mockResolvedValueOnce(mockAsset1 as never)
 
     await getById(req, res);
 
@@ -36,7 +21,7 @@ describe('Assets controller -> getById', () => {
     expect(res.status).toHaveBeenCalledWith(200);
 
     expect(res.json).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveBeenCalledWith(mockAsset);
+    expect(res.json).toHaveBeenCalledWith(mockAsset1);
   });
 });
 

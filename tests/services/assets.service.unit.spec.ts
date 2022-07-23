@@ -1,23 +1,8 @@
 import { prisma } from "../../src/database/prismaClient";
 import { getAllAssets, getAssetById } from "../../src/services/assets.service";
+import { mockAsset1, mockAsset2 } from "../mocks";
 
-const mockAsset = {
-  "id": 1,
-  "symbol": "ITSA4",
-  "name": "Itausa",
-  "available_quantity": 20000,
-  "price": "12"
-}
-
-const mockAsset2 = {
-  "id": 2,
-  "symbol": "ABEV3",
-  "name": "Ambev",
-  "available_quantity": 40000,
-  "price": "13"
-}
-
-const mockAssetsList = [mockAsset, mockAsset2];
+const mockAssetsList = [mockAsset1, mockAsset2];
 
 describe('Assets service -> getAssetById', () => {
   beforeEach(() => {
@@ -25,14 +10,14 @@ describe('Assets service -> getAssetById', () => {
   });
 
   it('should return the asset by id', async () => {
-    jest.spyOn(prisma.asset, 'findUniqueOrThrow').mockResolvedValue(mockAsset as never);
+    jest.spyOn(prisma.asset, 'findUniqueOrThrow').mockResolvedValue(mockAsset1 as never);
 
     const result = await getAssetById('1');
 
     expect(prisma.asset.findUniqueOrThrow).toHaveBeenCalledTimes(1);
     expect(prisma.asset.findUniqueOrThrow).toHaveBeenCalledWith({ where: { id: Number('1') } });
 
-    expect(result).toEqual(mockAsset);
+    expect(result).toEqual(mockAsset1);
   });
 
   it('should throws an error if there is no asset with the searched id', async () => {

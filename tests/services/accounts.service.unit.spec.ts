@@ -3,64 +3,7 @@ import { prisma } from "../../src/database/prismaClient";
 import {
   accountDeposit, accountWithdrawal, getAccountAssets, getAccountBalance
 } from "../../src/services/accounts.service";
-
-const mockClient = {
-  id: "clientId",
-  name: "Client Name",
-  email: "client@name.com",
-};
-
-const mockAccount = {
-  id: "accountId",
-  client_id: "clientId",
-  available_balance: 100 as unknown as Decimal,
-  investments_value: 150 as unknown as Decimal,
-  total_assets: 200 as unknown as Decimal,
-  created_at: "2020-01-01" as unknown as Date,
-  updated_at: "2020-01-01" as unknown as Date,
-};
-
-const mockPortfolio = [
-  {
-      "id": 1,
-      "account_id": "cl5w8ryhv0003y9njg9jp3y01",
-      "asset_id": 1,
-      "symbol": "ITSA4",
-      "quantity": 500,
-      "average_price": "12",
-      "created_at": "2022-07-22T10:01:12.015Z",
-      "updated_at": "2022-07-22T10:01:12.015Z"
-  },
-  {
-      "id": 2,
-      "account_id": "cl5w8ryhv0003y9njg9jp3y01",
-      "asset_id": 2,
-      "symbol": "B3SA3",
-      "quantity": 300,
-      "average_price": "15",
-      "created_at": "2022-07-22T10:01:19.638Z",
-      "updated_at": "2022-07-22T10:01:19.638Z"
-  },
-]
-
-const mockFirstTransactionReturn = [
-  {
-    id: 'cl5vz26860001isnjko290i97',
-    client_id: 'cl5vz26860000isnj383h7wq0',
-    available_balance: 165000,
-    investments_value: 0,
-    total_assets: 0,
-    created_at: "2022-07-22T04:38:17.094Z" as unknown as Date,
-    updated_at: "2022-07-22T06:38:47.824Z" as unknown as Date,
-  },
-  {
-    id: 19,
-    account_id: 'cl5vz26860001isnjko290i97',
-    value: 50000,
-    transaction_type: 'DEPOSIT',
-    created_at: "2022-07-22T06:38:47.824Z" as unknown as Date
-  }
-]
+import { mockAccount, mockClient, mockFirstTransactionReturn, mockPortfolio } from "../mocks";
 
 describe('Account service -> accountDeposit', () => {
   beforeEach(() => {

@@ -1,3 +1,4 @@
 prisma/seed.ts
+tests/
 *.spec.ts
 *.test.ts
