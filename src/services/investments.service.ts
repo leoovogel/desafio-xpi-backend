@@ -49,6 +49,15 @@ export async function buyInvestment(client: IClient, { assetId, assetQuantity }:
 
   // TODO on update, create function to update average_price
   const result = await prisma.$transaction(async (prismaTransaction) => {
+    const updatedAccountBalance = await prismaTransaction.account.update({
+      where: { id: clientAccount.id },
+      data: {
+        available_balance: Number(clientAccount.available_balance) - assetQuantity * Number(asset.price),
+      },
+    });
+
+    if (Number(updatedAccountBalance.available_balance) < 0) throw new HttpException('Insufficient funds', StatusCodes.BAD_REQUEST);
+
     await prismaTransaction.investments_history.create({
       data: {
         account_id: clientAccount.id,
@@ -113,6 +122,11 @@ export async function sellInvestment(client: IClient, { assetId, assetQuantity }
     }
 
     const asset = await findAsset(assetId);
+
+    await prismaTransaction.account.update({
+      where: { id: clientAccount.id },
+      data: { available_balance: { increment: assetQuantity * Number(asset.price) } },
+    });
 
     await prismaTransaction.account.update({
       where: { id: clientAccount.id },
