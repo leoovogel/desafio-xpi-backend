@@ -1,7 +1,7 @@
 import { Account, Portfolio } from "@prisma/client";
 import { prisma } from "../../src/database/prismaClient";
 import { buyInvestment, sellInvestment } from "../../src/services/investments.service";
-import { mockAccount, mockAsset1, mockAssetHistory, mockAssetPortfolio, mockClient, mockInvestmentBody, mockTransactionReturn } from "../mocks";
+import { mockAccount, mockAsset1, mockAssetPortfolio, mockClient, mockInvestmentBody, mockTransactionReturn, mockTransactionReturnBuyInvestment } from "../mocks";
 
 describe('Investments service -> buyInvestment', () => {
   beforeEach(() => {
@@ -37,9 +37,7 @@ describe('Investments service -> buyInvestment', () => {
   it('should buy an investment and return the investment details', async () => {
     jest.spyOn(prisma.account, "findUnique").mockResolvedValue(mockAccount);
     jest.spyOn(prisma.asset, "findUnique").mockResolvedValue(mockAsset1);
-    jest.spyOn(prisma, "$transaction").mockResolvedValue([mockAssetHistory, mockAssetPortfolio]);
-    jest.spyOn(prisma.investments_history, "create").mockReturnValue(jest.fn() as never);
-    jest.spyOn(prisma.portfolio, "upsert").mockReturnValue(jest.fn() as never);
+    jest.spyOn(prisma, "$transaction").mockResolvedValue(mockTransactionReturnBuyInvestment);
 
     await buyInvestment(mockClient, mockInvestmentBody);
 
@@ -54,8 +52,6 @@ describe('Investments service -> buyInvestment', () => {
     });
 
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(prisma.investments_history.create).toHaveBeenCalledTimes(1);
-    expect(prisma.portfolio.upsert).toHaveBeenCalledTimes(1);
   });
 });
 

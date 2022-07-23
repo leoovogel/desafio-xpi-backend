@@ -77,14 +77,14 @@ export const mockClientPayload = {
 export const mockReturnBuyInvestment = {
   symbol: 'ITSA4',
   quantity: 1,
-  unitPrice: 12 as unknown as Decimal,
+  unitPrice: 12,
   totalPrice: 12,
 };
 
 export const mockReturnSellInvestment = {
   symbol: 'ITSA4',
   quantity: 1,
-  unitPrice: 12 as unknown as Decimal,
+  unitPrice: 12,
   totalPrice: 12,
 };
 
@@ -139,5 +139,12 @@ export const mockTransactionReturn = {
   price: 12,
   totalPrice: 12000,
 };
+
+export const mockTransactionReturnBuyInvestment = {
+  symbol: 'B3SA3',
+  quantity: 300,
+  unitPrice: 10.72,
+  totalPrice: 321600,
+}
 
 export const mockValidToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsNXRrZ3F6OTAwMDJncm8wZ3VnbjJwOW0iLCJuYW1lIjoiTGVvbmFyZG8iLCJlbWFpbCI6Imxlb25hcmRvQHZvZ2VsLmNvbSIsImlhdCI6MTY1ODM4ODg2NywiZXhwIjoxNjU4NDA2ODY3fQ.dieeDm99bGZPnIw2qrBxG_4yMMVrjaBKzqVD9U40q5A';
