@@ -1,6 +1,6 @@
-import { buildReq, buildRes } from "../../tests/builders";
-import { getAll, getById } from "./assets.controller";
-import * as assetService from '../services/assets.service';
+import { buildReq, buildRes } from "../builders";
+import { getAll, getById } from "../../src/controllers/assets.controller";
+import * as assetService from "../../src/services/assets.service";
 
 const mockAsset = {
   "id": 1,

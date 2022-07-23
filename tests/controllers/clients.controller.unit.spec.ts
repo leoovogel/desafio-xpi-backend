@@ -1,8 +1,8 @@
-import { buildReq, buildRes } from "../../tests/builders";
-import * as clientService from '../services/clients.service';
-import { login, register } from "./clients.controller";
+import { buildReq, buildRes } from "../builders";
+import * as clientService from '../../src/services/clients.service';
+import { login, register } from "../../src/controllers/clients.controller";
 
-jest.mock('../services/clients.service');
+jest.mock('../../src/services/clients.service');
 
 const fakeTokenValid = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNsNXRrZ3F6OTAwMDJncm8wZ3VnbjJwOW0iLCJuYW1lIjoiTGVvbmFyZG8iLCJlbWFpbCI6Imxlb25hcmRvQHZvZ2VsLmNvbSIsImlhdCI6MTY1ODM4ODg2NywiZXhwIjoxNjU4NDA2ODY3fQ.dieeDm99bGZPnIw2qrBxG_4yMMVrjaBKzqVD9U40q5A'
 

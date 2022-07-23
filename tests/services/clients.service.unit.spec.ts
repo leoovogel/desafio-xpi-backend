@@ -1,12 +1,12 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import bcrypt from "bcrypt";
 
-import { loginClient, registerClient } from "./clients.service";
-import { prisma } from "../database/prismaClient";
-import * as tokenUtils from "../utils/token";
+import { loginClient, registerClient } from "../../src/services/clients.service";
+import { prisma } from "../../src/database/prismaClient";
+import * as tokenUtils from "../../src/utils/token";
 
 jest.mock("bcrypt")
-jest.mock("../utils/token")
+jest.mock("../../src/utils/token")
 
 const fakeClientBody = {
   name: "Fake Client",

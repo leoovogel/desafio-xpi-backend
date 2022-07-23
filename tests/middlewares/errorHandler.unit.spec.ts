@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
-import * as builders from '../../tests/builders';
-import errorMiddleware from './errorHandler';
+import * as builders from '../builders';
+import errorMiddleware from '../../src/middlewares/errorHandler';
 
 describe('Error handler middleware', () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import authMiddleware from '../../src/middlewares/authMiddleware';
-import { buildNext, buildReq, buildRes } from '../../tests/builders';
+import { buildNext, buildReq, buildRes } from '../builders';
 import * as tokenUtils from '../../src/utils/token';
 
 jest.mock('../../src/utils/token');

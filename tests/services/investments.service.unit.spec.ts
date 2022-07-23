@@ -1,7 +1,7 @@
 import { Account, Portfolio } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime";
-import { prisma } from "../database/prismaClient";
-import { buyInvestment, sellInvestment } from "./investments.service";
+import { prisma } from "../../src/database/prismaClient";
+import { buyInvestment, sellInvestment } from "../../src/services/investments.service";
 
 const mockClient = {
   id: "mockClientId",

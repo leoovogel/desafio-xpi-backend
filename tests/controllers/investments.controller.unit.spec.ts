@@ -1,9 +1,9 @@
-import { buildReq, buildRes } from "../../tests/builders";
-import { buy, sell } from "./investments.controller";
-import * as investmentService from "../services/investments.service";
+import { buildReq, buildRes } from "../builders";
+import { buy, sell } from "../../src/controllers/investments.controller";
+import * as investmentService from "../../src/services/investments.service";
 import { Decimal } from "@prisma/client/runtime";
 
-jest.mock('../services/investments.service');
+jest.mock('../../src/services/investments.service');
 
 const mockReturnBuyInvestment = {
   symbol: 'ITSA4',

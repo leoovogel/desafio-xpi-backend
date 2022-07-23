@@ -1,5 +1,5 @@
-import { prisma } from "../database/prismaClient";
-import { getAllAssets, getAssetById } from "./assets.service";
+import { prisma } from "../../src/database/prismaClient";
+import { getAllAssets, getAssetById } from "../../src/services/assets.service";
 
 const mockAsset = {
   "id": 1,

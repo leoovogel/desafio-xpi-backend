@@ -1,7 +1,7 @@
 import { Decimal } from "@prisma/client/runtime";
-import { buildReq, buildRes } from "../../tests/builders";
-import * as accountService from '../services/accounts.service';
-import { deposit, getAssets, getBalance, withdrawal } from "./accounts.controller";
+import { buildReq, buildRes } from "../builders";
+import * as accountService from '../../src/services/accounts.service';
+import { deposit, getAssets, getBalance, withdrawal } from "../../src/controllers/accounts.controller";
 
 const mockClient = {
   id: 'clientId',

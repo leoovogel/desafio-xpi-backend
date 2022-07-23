@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { generateToken, verifyToken } from "./token";
+import { generateToken, verifyToken } from "../../src/utils/token";
 
 describe('Token', () => {
   const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM3YzM4MWMyLTQyZDctNGMyNS05OWEzLTEwMTE2MmIyZGM2YSIsIm5hbWUiOiJMZW9uYXJkbyIsImVtYWlsIjoidGVzdGUxQHRlc3RlLmNvbSIsImlhdCI6MTY1ODIzNTk3OSwiZXhwIjoxNjU4MjUzOTc5fQ.A4zMknJrnw8jjeVnz2vocRn73cLofOMt5pHztXwn6Xs'
