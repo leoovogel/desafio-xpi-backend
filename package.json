@@ -10,7 +10,8 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "test": "jest",
     "test:watch": "jest --watchAll --no-coverage",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "openmarket": "ts-node src/utils/openMarket.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
