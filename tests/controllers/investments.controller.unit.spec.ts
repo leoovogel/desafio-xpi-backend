@@ -1,29 +1,9 @@
-import { buildReq, buildRes } from "../../tests/builders";
-import { buy, sell } from "./investments.controller";
-import * as investmentService from "../services/investments.service";
-import { Decimal } from "@prisma/client/runtime";
+import { buildReq, buildRes } from "../builders";
+import { buy, sell } from "../../src/controllers/investments.controller";
+import * as investmentService from "../../src/services/investments.service";
+import { mockClient, mockReturnBuyInvestment, mockReturnSellInvestment } from "../mocks";
 
-jest.mock('../services/investments.service');
-
-const mockReturnBuyInvestment = {
-  symbol: 'ITSA4',
-  quantity: 1,
-  unitPrice: 12 as unknown as Decimal,
-  totalPrice: 12,
-}
-
-const mockReturnSellInvestment = {
-  symbol: 'ITSA4',
-  quantity: 1,
-  unitPrice: 12 as unknown as Decimal,
-  totalPrice: 12,
-}
-
-const mockClient = {
-  id: '123123',
-  name: 'Client Name',
-  email: 'client@mock.com',
-}
+jest.mock('../../src/services/investments.service');
 
 beforeEach(() => {
   jest.resetAllMocks();

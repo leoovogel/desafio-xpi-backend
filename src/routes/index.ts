@@ -4,6 +4,7 @@ import { Express } from 'express';
 import investmentsRouter from './investments.router';
 import clientsRouter from './clients.router';
 import accountsRouter from './accounts.router';
+import assetsRouter from './assets.router';
 
 import validateBody from '../middlewares/validateBody';
 
@@ -11,6 +12,7 @@ const routers = [
   { '/': clientsRouter },
   { '/investments': investmentsRouter },
   { '/account': accountsRouter },
+  { '/assets': assetsRouter },
 ];
 const middlewares = [validateBody];
 

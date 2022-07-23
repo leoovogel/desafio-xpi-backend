@@ -6,4 +6,6 @@ import authMiddleware from '../middlewares/authMiddleware';
 export default Router()
   .use(authMiddleware)
   .post('/deposit', accountsController.deposit)
-  .post('/withdrawal', accountsController.withdrawal);
+  .post('/withdrawal', accountsController.withdrawal)
+  .get('/balance', accountsController.getBalance)
+  .get('/assets', accountsController.getAssets);

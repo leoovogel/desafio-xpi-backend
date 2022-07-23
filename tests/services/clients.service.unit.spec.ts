@@ -1,25 +1,13 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import bcrypt from "bcrypt";
 
-import { loginClient, registerClient } from "./clients.service";
-import { prisma } from "../database/prismaClient";
-import * as tokenUtils from "../utils/token";
+import { loginClient, registerClient } from "../../src/services/clients.service";
+import { prisma } from "../../src/database/prismaClient";
+import * as tokenUtils from "../../src/utils/token";
+import { mockClientBody, mockCreatedClient } from "../mocks";
 
 jest.mock("bcrypt")
-jest.mock("../utils/token")
-
-const fakeClientBody = {
-  name: "Fake Client",
-  email: "fake@client.com",
-  password: "fakePassword"
-}
-
-const fakeCreatedClient = {
-  id: "cl5ur7xpo00005eo0qvml515a",
-  name: "Fake Client",
-  email: "fake@client.com",
-  password: "$2b$10$X8ggUZTGc00CPmQ.m9gaous2UQ2mv4r1TQyeLNgQGATGngAFvpkBy"
-}
+jest.mock("../../src/utils/token")
 
 describe('Clients service -> registerClient', () => {
   beforeEach(() => {
@@ -27,19 +15,19 @@ describe('Clients service -> registerClient', () => {
   });
 
   it('should register a client in the client table and not throw any error', async () => {
-    jest.spyOn(bcrypt, "hash").mockResolvedValue(fakeCreatedClient.password as never);
-    jest.spyOn(prisma.client, "create").mockResolvedValue(fakeCreatedClient);
+    jest.spyOn(bcrypt, "hash").mockResolvedValue(mockCreatedClient.password as never);
+    jest.spyOn(prisma.client, "create").mockResolvedValue(mockCreatedClient);
   
-    await registerClient(fakeClientBody)
+    await registerClient(mockClientBody)
 
-    expect(bcrypt.hash).toHaveBeenCalledWith(fakeClientBody.password, 10);
+    expect(bcrypt.hash).toHaveBeenCalledWith(mockClientBody.password, 10);
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
 
     expect(prisma.client.create).toHaveBeenCalledTimes(1);
     expect(prisma.client.create).toHaveBeenCalledWith({
       data: {
-        ...fakeClientBody,
-        password: fakeCreatedClient.password,
+        ...mockClientBody,
+        password: mockCreatedClient.password,
         Account: { create: { } }
       }
     })
@@ -49,7 +37,7 @@ describe('Clients service -> registerClient', () => {
     jest.spyOn(prisma.client, "create").mockRejectedValue(new PrismaClientKnownRequestError("Email already registered", "P2002", "4.0.0"));
 
     expect(async () => {
-      await registerClient(fakeClientBody)
+      await registerClient(mockClientBody)
     }).rejects.toThrow("Email already registered");
   });
 
@@ -57,7 +45,7 @@ describe('Clients service -> registerClient', () => {
     jest.spyOn(prisma.client, "create").mockRejectedValue(new Error("Some error"));
 
     expect(async () => {
-      await registerClient(fakeClientBody)
+      await registerClient(mockClientBody)
     }).rejects.toThrow("Internal Server error");
   });
 });
@@ -68,17 +56,17 @@ describe('Clients service -> loginClient', () => {
   });
 
   it('should return a valid token if the email and password is valid', async () => {
-    jest.spyOn(prisma.client, "findUnique").mockResolvedValue(fakeCreatedClient);
+    jest.spyOn(prisma.client, "findUnique").mockResolvedValue(mockCreatedClient);
     jest.spyOn(bcrypt, "compare").mockResolvedValue(true as never);
     jest.spyOn(tokenUtils, "generateToken").mockReturnValue("fakeToken");
 
-    const token = await loginClient(fakeClientBody)
+    const token = await loginClient(mockClientBody)
 
     expect(prisma.client.findUnique).toHaveBeenCalledTimes(1);
-    expect(prisma.client.findUnique).toHaveBeenCalledWith({ where: { email: fakeClientBody.email } });
+    expect(prisma.client.findUnique).toHaveBeenCalledWith({ where: { email: mockClientBody.email } });
 
     expect(bcrypt.compare).toHaveBeenCalledTimes(1);
-    expect(bcrypt.compare).toHaveBeenCalledWith(fakeClientBody.password, fakeCreatedClient.password);
+    expect(bcrypt.compare).toHaveBeenCalledWith(mockClientBody.password, mockCreatedClient.password);
 
     expect(token).toBeDefined();
     expect(token).toBe('fakeToken');
@@ -88,16 +76,16 @@ describe('Clients service -> loginClient', () => {
     jest.spyOn(prisma.client, "findUnique").mockResolvedValue(null);
 
     expect(async () => {
-      await loginClient(fakeClientBody)
+      await loginClient(mockClientBody)
     }).rejects.toThrow("Email or password incorrect");
   });
 
   it('should throw an error if the password entered is not correct', async () => {
-    jest.spyOn(prisma.client, "findUnique").mockResolvedValue(fakeCreatedClient);
+    jest.spyOn(prisma.client, "findUnique").mockResolvedValue(mockCreatedClient);
     jest.spyOn(bcrypt, "compare").mockResolvedValue(false as never);
 
     expect(async () => {
-      await loginClient(fakeClientBody)
+      await loginClient(mockClientBody)
     }).rejects.toThrow("Email or password incorrect");
   });
 });

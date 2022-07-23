@@ -1,5 +1,5 @@
-import * as builders from '../../tests/builders';
-import validateBody from './validateBody';
+import * as builders from '../builders';
+import validateBody from '../../src/middlewares/validateBody';
 
 describe('Validate Body middleware', () => {
   beforeEach(() => {
