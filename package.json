@@ -4,8 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "prestart": "prisma generate",
-    "start": "ts-node src/index.ts",
+    "start": "node dist/index.js",
     "predev": "prisma migrate reset && prisma generate",
     "dev": "nodemon --exec ts-node src/index.ts",
     "test": "jest",
