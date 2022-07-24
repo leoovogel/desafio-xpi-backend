@@ -138,11 +138,6 @@ export async function sellInvestment(client: IClient, { assetId, assetQuantity }
       data: { available_balance: { increment: assetQuantity * Number(asset.price) } },
     });
 
-    await prismaTransaction.account.update({
-      where: { id: clientAccount.id },
-      data: { available_balance: { increment: assetQuantity * Number(asset.price) } },
-    });
-
     await prismaTransaction.investments_history.create({
       data: {
         account_id: clientAccount.id,
