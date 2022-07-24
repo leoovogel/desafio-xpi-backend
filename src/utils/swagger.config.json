@@ -1,0 +1,521 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Desafio técnico XP Inc. 2022 - Back-end",
+    "description": "API simulando uma corretora com banco digital para o desafio técnico XP Inc. 2022",
+    "contact": {
+      "name": "Leonardo Vogel",
+      "email": "leeo.vog13@gmail.com",
+      "url": "https://www.linkedin.com/in/leonardovogel/"
+    },
+    "version": "1.0.0"
+  },
+
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "API localhost"
+    }
+  ],
+
+  "components": {
+    "responses": {
+      "unauthorized": {
+        "description": "Unauthorized - Token not found or invalid"
+      },
+      "internalServerError": {
+        "description": "Internal Server Error"
+      },
+      "badRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "in": "header"
+      }
+    }
+  },
+
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+
+  "security": [{ "bearerAuth": [] }],
+
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Registrar um novo cliente",
+        "description": "Rota responsável por registrar um novo cliente",
+        "tags": ["Clients"],
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "name": { "type": "string" }
+                },
+                "example": {
+                  "email": "cliente@xpi.com",
+                  "password": "12345678",
+                  "name": "Cliente Exemplo"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "No content" },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login de um cliente",
+        "description": "Rota responsável por realizar o login de um cliente",
+        "tags": ["Clients"],
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "example": {
+                  "email": "cliente@xpi.com",
+                  "password": "12345678"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/investments/buy": {
+      "post": {
+        "summary": "Comprar um ativo",
+        "description": "Rota responsável por realizar a compra de um ativo",
+        "tags": ["Investments"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "assetId": { "type": "number" },
+                  "assetQuantity": { "type": "number" }
+                },
+                "example": {
+                  "assetId": 1,
+                  "assetQuantity": 100
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successful_purchase": {
+                      "type": "object",
+                      "properties": {
+                        "symbol": { "type": "string" },
+                        "quantity": { "type": "number" },
+                        "unitPrice": { "type": "number" },
+                        "totalPrice": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/investments/sell": {
+      "post": {
+        "summary": "Vender um ativo",
+        "description": "Rota responsável por realizar a venda de um ativo",
+        "tags": ["Investments"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "assetId": { "type": "number" },
+                  "assetQuantity": { "type": "number" }
+                },
+                "example": {
+                  "assetId": 1,
+                  "assetQuantity": 100
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "successful_sale": {
+                      "type": "object",
+                      "properties": {
+                        "symbol": { "type": "string" },
+                        "quantity": { "type": "number" },
+                        "unitPrice": { "type": "number" },
+                        "totalPrice": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/account/deposit": {
+      "post": {
+        "summary": "Realizar um depósito",
+        "description": "Rota responsável por realizar um depósito",
+        "tags": ["Account"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "number" }
+                },
+                "example": {
+                  "value": 100
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/account/withdrawal": {
+      "post": {
+        "summary": "Realizar um saque",
+        "description": "Rota responsável por realizar um saque",
+        "tags": ["Account"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "number" }
+                },
+                "example": {
+                  "value": 100
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/account/balance": {
+      "get": {
+        "summary": "Obter o saldo da conta",
+        "description": "Rota responsável por obter o saldo da conta",
+        "tags": ["Account"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "availableBalance": { "type": "string" },
+                    "investmentsValue": { "type": "string" },
+                    "totalAssets": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/account/assets": {
+      "get": {
+        "summary": "Obter os ativos da conta",
+        "description": "Rota responsável por obter os ativos da conta",
+        "tags": ["Account"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "number" },
+                      "account_id": { "type": "string" },
+                      "asset_id": { "type": "number" },
+                      "symbol": { "type": "string" },
+                      "quantity": { "type": "number" },
+                      "average_purchase_price": { "type": "string" },
+                      "acquisition_value": { "type": "string" },
+                      "current_value": { "type": "string" },
+                      "profitability_percentage": { "type": "string" },
+                      "profitability_value": { "type": "string" },
+                      "created_at": { "type": "string" },
+                      "updated_at": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/account/transactions-statement": {
+      "get": {
+        "summary": "Obter o extrato de transações",
+        "description": "Rota responsável por obter o extrato de transações",
+        "tags": ["Account"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "number" },
+                      "transaction_type": { "type": "string" },
+                      "value": { "type": "string" },
+                      "created_at": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/account/investments-statement": {
+      "get": {
+        "summary": "Obter o extrato de investimentos",
+        "description": "Rota responsável por obter o extrato de investimentos",
+        "tags": ["Account"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "number" },
+                      "asset_id": { "type": "number" },
+                      "investment_type": { "type": "string" },
+                      "quantity": { "type": "number" },
+                      "price": { "type": "string" },
+                      "created_at": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/assets/{id}": {
+      "get": {
+        "summary": "Obter informações de um ativo",
+        "description": "Rota responsável por obter informações de um ativo",
+        "tags": ["Assets"],
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do ativo",
+            "required": true,
+            "schema": { "type": "number" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "number" },
+                    "symbol": { "type": "string" },
+                    "name": { "type": "string" },
+                    "available_quantity": { "type": "number" },
+                    "price": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/assets": {
+      "get": {
+        "summary": "Obter todos os ativos",
+        "description": "Rota responsável por obter todos os ativos",
+        "tags": ["Assets"],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "number" },
+                      "symbol": { "type": "string" },
+                      "name": { "type": "string" },
+                      "available_quantity": { "type": "number" },
+                      "price": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/badRequest" },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "500": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    }
+  }
+}

@@ -7,8 +7,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   if (!token) return next({ status: StatusCodes.UNAUTHORIZED, message: 'Token not found' });
 
+  const [, tokenData] = token.split(' ');
+
   try {
-    const client = verifyToken(token);
+    const client = verifyToken(tokenData);
     res.locals.client = client;
   } catch (error) {
     return next({ status: StatusCodes.UNAUTHORIZED, message: 'Invalid token' });
