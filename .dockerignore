@@ -1,0 +1,6 @@
+.vscode/
+.git/
+coverage/
+node_modules/
+support/
+docker-compose.yml

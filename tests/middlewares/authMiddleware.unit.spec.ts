@@ -35,7 +35,7 @@ describe('Auth Middleware', () => {
   })
 
   it('should next have been called with error message and status code 401 when token is valid', () => {
-    const req = buildReq({ headers: { authorization: mockValidToken } });
+    const req = buildReq({ headers: { authorization: 'Bearer ' + mockValidToken } });
     const res = buildRes();
     const next = buildNext();
 
