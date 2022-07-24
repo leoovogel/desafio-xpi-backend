@@ -15,6 +15,10 @@
     {
       "url": "http://localhost:3000",
       "description": "API localhost"
+    },
+    {
+      "url": "https://desafio-xpinc.herokuapp.com",
+      "description": "API em produção"
     }
   ],
 
