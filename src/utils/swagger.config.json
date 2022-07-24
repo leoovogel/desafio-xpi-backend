@@ -386,6 +386,26 @@
         "summary": "Obter o extrato de transações",
         "description": "Rota responsável por obter o extrato de transações",
         "tags": ["Account"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Tipo de transação (deposit ou withdrawal)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -417,6 +437,26 @@
         "summary": "Obter o extrato de investimentos",
         "description": "Rota responsável por obter o extrato de investimentos",
         "tags": ["Account"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Tipo de investimento (buy ou sell)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
