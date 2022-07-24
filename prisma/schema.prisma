@@ -105,11 +105,15 @@ model Portfolio {
   account_id String
   asset_id   Int
 
-  symbol        String   @db.VarChar(10)
-  quantity      Int
-  average_price Decimal  @db.Decimal(10, 2)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  symbol                   String   @db.VarChar(10)
+  quantity                 Int
+  average_purchase_price   Decimal  @db.Decimal(10, 2)
+  acquisition_value        Decimal  @db.Decimal(10, 2)
+  current_value            Decimal  @db.Decimal(10, 2)
+  profitability_percentage Decimal  @db.Decimal(10, 2) @default(0)
+  profitability_value      Decimal  @db.Decimal(10, 2) @default(0)
+  created_at               DateTime @default(now())
+  updated_at               DateTime @updatedAt
 
   Asset   Asset?   @relation(fields: [asset_id], references: [id])
   Account Account? @relation(fields: [account_id], references: [id])
