@@ -36,9 +36,13 @@ export const mockPortfolio = [
     asset_id: 1,
     symbol: 'ITSA4',
     quantity: 500,
-    average_price: '12',
-    created_at: '2022-07-22T10:01:12.015Z',
-    updated_at: '2022-07-22T10:01:12.015Z',
+    average_purchase_price: '8.47' as unknown as Decimal,
+    acquisition_value: '4235' as unknown as Decimal,
+    current_value: '4335' as unknown as Decimal,
+    profitability_percentage: '10' as unknown as Decimal,
+    profitability_value: '100' as unknown as Decimal,
+    created_at: '2022-07-22T10:01:12.015Z' as unknown as Date,
+    updated_at: '2022-07-22T10:01:12.015Z' as unknown as Date,
   },
   {
     id: 2,
@@ -46,11 +50,20 @@ export const mockPortfolio = [
     asset_id: 2,
     symbol: 'B3SA3',
     quantity: 300,
-    average_price: '15',
+    average_purchase_price: '10.72' as unknown as Decimal,
+    acquisition_value: '3216' as unknown as Decimal,
+    current_value: '3416' as unknown as Decimal,
+    profitability_percentage: '15' as unknown as Decimal,
+    profitability_value: '200' as unknown as Decimal,
     created_at: '2022-07-22T10:01:19.638Z',
     updated_at: '2022-07-22T10:01:19.638Z',
   },
 ];
+
+export const mockAccountWithPortfolio = {
+  ...mockAccount,
+  portfolio: mockPortfolio,
+}
 
 export const mockAsset1 = {
   id: 1,
@@ -65,7 +78,7 @@ export const mockAsset2 = {
   symbol: 'ABEV3',
   name: 'Ambev',
   available_quantity: 40000,
-  price: '13',
+  price: '13' as unknown as Decimal,
 };
 
 export const mockClientPayload = {
