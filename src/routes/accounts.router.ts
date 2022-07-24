@@ -9,4 +9,5 @@ export default Router()
   .post('/deposit', accountsController.deposit)
   .post('/withdrawal', accountsController.withdrawal)
   .get('/balance', accountsController.getBalance)
-  .get('/assets', accountsController.getAssets);
+  .get('/assets', accountsController.getAssets)
+  .get('/transactions-statement', accountsController.getTransactionsStatement);

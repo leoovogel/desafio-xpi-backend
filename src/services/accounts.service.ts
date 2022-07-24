@@ -87,6 +87,29 @@ export async function getAccountAssets(client: IClient) {
   return clientAccount.portfolio;
 }
 
+export async function getAccountTransactionsStatement(
+  client: IClient,
+  { pageNumber, transactionType }: {pageNumber: number, transactionType: string},
+) {
+  const clientAccount = await prisma.account.findUniqueOrThrow({
+    where: { client_id: client.id },
+    include: { transactions: {
+      select: {
+        id: true, transaction_type: true, value: true, created_at: true,
+      },
+    } },
+  });
+
+  let transactions = transactionType !== 'DEPOSIT' && transactionType !== 'WITHDRAWAL'
+    ? clientAccount.transactions
+    : clientAccount.transactions.filter((transaction) => transaction.transaction_type === transactionType);
+
+  transactions = transactions
+    .slice((pageNumber - 1) * 10, pageNumber * 10);
+
+  return transactions;
+}
+
 export async function updateBalanceValue(client: IClient) {
   const clientAccount = await prisma.account.findUniqueOrThrow({
     where: { client_id: client.id },
