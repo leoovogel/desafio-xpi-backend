@@ -2,9 +2,10 @@
 import { Router } from 'express';
 import { accountsController } from '../controllers';
 import authMiddleware from '../middlewares/authMiddleware';
+import updateBalanceAndInvestments from '../middlewares/updateBalanceAndInvestments';
 
 export default Router()
-  .use(authMiddleware)
+  .use(authMiddleware, updateBalanceAndInvestments)
   .post('/deposit', accountsController.deposit)
   .post('/withdrawal', accountsController.withdrawal)
   .get('/balance', accountsController.getBalance)

@@ -86,3 +86,21 @@ export async function getAccountAssets(client: IClient) {
 
   return clientAccount.portfolio;
 }
+
+export async function updateBalanceValue(client: IClient) {
+  const clientAccount = await prisma.account.findUniqueOrThrow({
+    where: { client_id: client.id },
+    include: { portfolio: true },
+  });
+
+  const newInvestmentsValue = clientAccount.portfolio
+    .reduce((acc, portfolio) => acc + Number(portfolio.current_value), 0);
+
+  await prisma.account.update({
+    where: { id: clientAccount.id },
+    data: {
+      investments_value: newInvestmentsValue,
+      total_assets: newInvestmentsValue + Number(clientAccount.available_balance),
+    },
+  });
+}

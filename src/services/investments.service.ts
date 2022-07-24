@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { Account, Portfolio } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../database/prismaClient';
@@ -47,7 +48,6 @@ export async function buyInvestment(client: IClient, { assetId, assetQuantity }:
     throw new HttpException('assetQuantity greater than the available quantity', StatusCodes.BAD_REQUEST);
   }
 
-  // TODO on update, create function to update average_price
   const result = await prisma.$transaction(async (prismaTransaction) => {
     const updatedAccountBalance = await prismaTransaction.account.update({
       where: { id: clientAccount.id },
@@ -75,13 +75,18 @@ export async function buyInvestment(client: IClient, { assetId, assetQuantity }:
           asset_id: asset.id,
         },
       },
-      update: { quantity: { increment: assetQuantity } },
+      update: {
+        quantity: { increment: assetQuantity },
+        acquisition_value: { increment: assetQuantity * Number(asset.price) },
+      },
       create: {
         account_id: clientAccount.id,
         asset_id: asset.id,
         quantity: assetQuantity,
         symbol: asset.symbol,
-        average_price: Number(asset.price),
+        acquisition_value: assetQuantity * Number(asset.price),
+        average_purchase_price: Number(asset.price),
+        current_value: assetQuantity * Number(asset.price),
       },
     });
 
@@ -110,7 +115,12 @@ export async function sellInvestment(client: IClient, { assetId, assetQuantity }
           asset_id: assetId,
         },
       },
-      data: { quantity: { decrement: assetQuantity } },
+      data: {
+        quantity: { decrement: assetQuantity },
+        //! Incorrect calculation of new acquisition value
+        // TODO fix this - use the investment history to calculate the new acquisition value
+        acquisition_value: { decrement: assetQuantity * Number(assetToSell.average_purchase_price) },
+      },
     });
 
     if (assetPortfolio.quantity < 0) throw new HttpException('Not enough assets to sell', StatusCodes.BAD_REQUEST);
@@ -152,4 +162,32 @@ export async function sellInvestment(client: IClient, { assetId, assetQuantity }
   });
 
   return result;
+}
+
+export async function updateInvestmentsValue(client: IClient) {
+  const clientAccount = await findAccount(client.id, { include: { portfolio: true } }) as (Account & { portfolio: Portfolio[]; });
+
+  await Promise.all(clientAccount.portfolio
+    .map(async (portfolio) => {
+      const asset = await findAsset(portfolio.asset_id);
+
+      const newCurrentValue = Number(asset.price) * Number(portfolio.quantity);
+      const acquisitionValue = Number(portfolio.acquisition_value);
+
+      const updatedPortfolio = await prisma.portfolio.update({
+        where: {
+          account_id_asset_id: {
+            account_id: clientAccount.id,
+            asset_id: portfolio.asset_id,
+          },
+        },
+        data: {
+          current_value: newCurrentValue,
+          profitability_percentage: (newCurrentValue / acquisitionValue - 1) * 100,
+          profitability_value: newCurrentValue - acquisitionValue,
+        },
+      });
+
+      return updatedPortfolio;
+    }));
 }
