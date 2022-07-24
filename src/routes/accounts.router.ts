@@ -10,4 +10,5 @@ export default Router()
   .post('/withdrawal', accountsController.withdrawal)
   .get('/balance', accountsController.getBalance)
   .get('/assets', accountsController.getAssets)
-  .get('/transactions-statement', accountsController.getTransactionsStatement);
+  .get('/transactions-statement', accountsController.getTransactionsStatement)
+  .get('/investments-statement', accountsController.getInvestmentsStatement);

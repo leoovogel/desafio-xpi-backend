@@ -110,6 +110,27 @@ export async function getAccountTransactionsStatement(
   return transactions;
 }
 
+export async function getAccountInvestmentsStatement(
+  client: IClient,
+  { pageNumber, investmentType }: {pageNumber: number, investmentType: string},
+) {
+  const clientAccount = await prisma.account.findUniqueOrThrow({
+    where: { client_id: client.id },
+    include: { investments: {
+      select: { id: true, asset_id: true, investment_type: true, quantity: true, price: true, created_at: true },
+    } },
+  });
+
+  let investments = investmentType !== 'BUY' && investmentType !== 'SELL'
+    ? clientAccount.investments
+    : clientAccount.investments.filter((investment) => investment.investment_type === investmentType);
+
+  investments = investments
+    .slice((pageNumber - 1) * 10, pageNumber * 10);
+
+  return investments;
+}
+
 export async function updateBalanceValue(client: IClient) {
   const clientAccount = await prisma.account.findUniqueOrThrow({
     where: { client_id: client.id },
