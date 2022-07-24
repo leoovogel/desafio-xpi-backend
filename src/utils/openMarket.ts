@@ -2,10 +2,13 @@
 /* eslint-disable no-console */
 import { prisma } from '../database/prismaClient';
 
+const UPDATE_RATE = 5000;
+
 async function randomAssetPrice() {
-  console.log(`Mercado aberto, atualizando preços dos ativos.
-------------------------------------------------------------
-Para fechar, pressione Ctrl+C`);
+  console.log(`
+
+Mercado aberto, atualizando o preços de todos os ativos a cada ${UPDATE_RATE / 1000} segundos.
+!! Para fechar, pressione Ctrl+C ou encerre o processo. !!`);
 
   setInterval(async () => {
     const assets = await prisma.asset.findMany();
@@ -25,9 +28,9 @@ Para fechar, pressione Ctrl+C`);
         data: { price: newPrice },
       });
 
-      console.log(`Symbol: ${asset.symbol} Price: ${newPrice}`);
+      // console.log(`Symbol: ${asset.symbol} Price: ${newPrice}`);
     });
-  }, 1000);
+  }, UPDATE_RATE);
 }
 
 randomAssetPrice();
