@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "prestart": "prisma generate",
-    "start": "node dist/index.js",
-    "predev": "prisma migrate reset && prisma generate",
+    "start": "node dist/src/index.js",
+    "predev": "prisma migrate reset --force && prisma generate",
     "dev": "nodemon --exec ts-node src/index.ts",
     "test": "jest",
     "test:watch": "jest --watchAll --no-coverage",

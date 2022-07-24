@@ -3,4 +3,4 @@ build:
     web: Dockerfile
 
 run:
-  web: node index.js
+  web: yarn start
