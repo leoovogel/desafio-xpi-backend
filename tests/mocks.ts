@@ -65,6 +65,32 @@ export const mockAccountWithPortfolio = {
   portfolio: mockPortfolio,
 }
 
+export const mockTransactions = {
+  id: 1,
+  transaction_type: 'DEPOSIT',
+  value: '100' as unknown as Decimal,
+  created_at: '2020-01-01T00:00:00.000Z' as unknown as Date,
+}
+
+export const mockAccountWithTransactions = {
+  ...mockAccount,
+  transactions: [mockTransactions],
+}
+
+export const mockInvestment = {
+  id: 1,
+  asset_id: 1,
+  investment_type: 'BUY',
+  quantity: 100,
+  price: '10',
+  created_at: '2020-01-01T00:00:00.000Z',
+}
+
+export const mockAccountWithInvestments = {
+  ...mockAccount,
+  investments: [mockInvestment],
+}
+
 export const mockAsset1 = {
   id: 1,
   symbol: 'ITSA4',
