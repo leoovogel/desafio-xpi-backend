@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "prebuild": "prisma generate",
     "build": "tsc",
     "prestart": "prisma generate",
     "start": "node dist/src/index.js",
