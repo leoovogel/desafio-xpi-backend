@@ -4,13 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "prestart": "prisma generate",
-    "start": "ts-node src/index.ts",
+    "start": "node dist/index.js",
     "predev": "prisma migrate reset && prisma generate",
     "dev": "nodemon --exec ts-node src/index.ts",
     "test": "jest",
     "test:watch": "jest --watchAll --no-coverage",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "openmarket": "ts-node src/utils/openMarket.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

@@ -61,7 +61,11 @@ Table portfolio {
   asset_id Int [not null]
   symbol String [not null]
   quantity Int [not null]
-  average_price Decimal [not null]
+  average_purchase_price Decimal [not null]
+  acquisition_value Decimal [not null]
+  current_value Decimal [not null]
+  profitability_percentage Decimal [not null, default: 0]
+  profitability_value Decimal [not null, default: 0]
   created_at DateTime [default: `now()`, not null]
   updated_at DateTime [not null]
   Asset assets
