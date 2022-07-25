@@ -1,59 +1,67 @@
-<h1 id="top">🚀 Desafio técnico XP Inc. 2022 - Back-end 🚀</h1>
+<h1 id="top" align="center">🚀 Desafio técnico XP Inc. 2022 - Back-end 🚀</h1>
 
 ![](https://i.imgur.com/hDmClWE.png)
 
 <h2>Tópicos:</h2>
 
 - [Resumo do projeto](#summary)
-- [Como executar o projeto](#howRun)
+- [Passo a passo](#stepByStep)
 - [Explicando decisões do projeto](#decisions)
-- [Explicando funcionalidades da API]()
-- [Próximos passos]()
+- [Explicando funcionalidades da API](#functionalities)
+- [Próximos passos](#nextSteps)
 
-<h2 id="summary">Resumo do projeto</h2>
+---
+
+<h2 id="summary">📝 Resumo do projeto</h2>
+
+<br>
 
 Essa é uma API RESTful que tem como objetivo simular o funcionamento de uma corretora e banco digital, foi desenvolvida com algumas funcionalidades simples de gerenciamento de clientes, contas, investimentos e ativos.
 
 <p align="right"><a href="#top">Voltar ao topo</a></p>
 
-<h2 id="howRun">Como executar o projeto</h2>
-<details><summary>Docker e docker-compose (recomendado)</summary>
+---
+
+<h2 id="stepByStep">🦶 Passo a passo</h2>
+
+<br>
+
+<details><summary>Como executar o projeto</summary>
 <p>
-- Pré requisitos: <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git</a>, <a href="https://docs.docker.com/desktop/">Docker</a> e <a href="https://docs.docker.com/compose/install/">docker-compose</a>
 
-Faça o clone do repositório e entre na pasta do projeto:
+<details><summary>🐋 Docker e docker-compose (recomendado)</summary>
+<p>
+
+<br>
+
+⚠️ Pré requisitos: <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git</a>, <a href="https://docs.docker.com/desktop/">Docker</a> e <a href="https://docs.docker.com/compose/install/">docker-compose</a>
+
+<br>
+
 ```bash
-git clone git@github.com:leonardoVogel/desafio-xpi-backend.git && cd desafio-xpi-backend
+# Faça o clone do repositório e entre na pasta do projeto:
+$ git clone git@github.com:leonardoVogel/desafio-xpi-backend.git && cd desafio-xpi-backend
+
+# Renomeie o arquivo .env.example para .env (não é necessário alterar as variáveis, apenas se deseja executar a aplicação em outra porta):
+$ mv .env.example .env
+
+# Suba os containers com o docker-compose:
+$ docker-compose up -d
+
+# Acesso o container para rodar a aplicação:
+$ docker exec -it xpi_backend bash
+
+# Instale as dependências:
+$ yarn install
+
+# Por fim, rode a aplicação (esse comando já irá gerar o banco de dados e popular com alguns dados, sempre que ele for executado o banco será restaurado):
+$ yarn dev
 ```
 
-Renomeie o arquivo .env.example para .env (não é necessário alterar as variáveis, apenas se deseja executar a aplicação em outra porta):
-```bash
-mv .env.example .env
-```
 
-Suba os containers com o docker-compose:
 ```bash
-docker-compose up -d
-```
-
-Acesso o container para rodar a aplicação:
-```bash
-docker exec -it xpi_backend bash
-```
-
-Instale as dependências:
-```bash
-yarn install
-```
-
-Por fim, rode a aplicação (esse comando já irá gerar o banco de dados e popular com alguns dados, sempre que ele for executado o banco será restaurado):
-```bash
-yarn dev
-```
-
-Após isso, você pode abrir um novo terminar e entrar novamente no container para executar o seguinte comando e iniciar um processo de atualização aleatória dos preços dos ativos:
-```bash
-yarn openmarket
+# Após isso, você pode abrir um novo terminar e entrar novamente no container para executar o seguinte comando e iniciar um processo de atualização aleatória dos preços dos ativos:
+$ yarn openmarket
 ```
 
 </p>
@@ -65,51 +73,54 @@ yarn openmarket
 </p>
 </details>
 
+</p>
+</details>
+
+<br>
+
+<details><summary>Como interagir com o projeto</summary>
+<p>
+
+<details><summary>Utilizando VSCode + postman ou insomnia</summary>
+<p>
+
+<a href="/support/desafio-xpi-requests.json" download>Download Requests file</a>
+
+- Importe o arquivo com as requests no postman ou insomnia;
+
+- Configure as variáveis `base_url` (exemplo: `http://localhost:3000`) e `auth` com o token, depois que já tiver um.
+
+
+</p>
+</details>
+
+<br>
+
+<details><summary>Utilizando a documentação do swagger</summary>
+<p>
+
+- Acesse o deploy da API, no endpoint `/api-docs`: https://desafio-xpinc.herokuapp.com/api-docs/;
+
+- Registre uma conta no endpoint `/register` e depois faça o login com esses mesmos dados no endpoint `/login`;
+
+- Copie o token retornado na resposta do login e cole ele no campo `Value` ao clicar no botão `Authorize 🔓`;
+
+- Após isso, todas as rotas estarão liberadas para interagir.
+
+</p>
+</details>
+
+
+</p>
+</details>
+
 <p align="right"><a href="#top">Voltar ao topo</a></p>
 
-<h2 id="functionalities">Funcionalidades da aplicação</h2>
+---
 
-<h3>Clients:</h3>
-
-| Endpoint | Descrição |
-|---|---|
-| /register | Registra um cliente no banco de dados |
-| /login | Usado para logar um usuário, retorna um token |
+<h2 id="decisions">👨‍💻 Explicando decisões do projeto</h2>
 
 <br>
-
-<h3>Investments:</h3>
-
-| Endpoint | Descrição |
-|---|---|
-| /investments/buy | Registra a compra de um ativo, diminuindo o saldo disponível |
-| /investments/sell | Registra a venda de um ativo, aumentando o saldo disponível |
-
-<br>
-
-<h3>Account:</h3>
-
-| Endpoint | Descrição |
-|---|---|
-| /account/deposit | Realiza um depósito na conta |
-| /account/withdrawal | Realiza um saque da conta |
-| /account/balance | Retorna o saldo disponível e investido da conta |
-| /account/assets | Retorna uma lista com as ações no portfolio do cliente |
-| /account/transactions-statement | Retorna um extrato das transações efetuadas pela conta, recebe page e type no query param |
-| /account/investments-statement | Retorna um extrato dos investimentos efetuados pela conta, recebe page e type no query param |
-
-<br>
-
-<h3>Assets:</h3>
-
-| Endpoint | Descrição |
-|---|---|
-| /assets/:id | Retorna as informações sobre um ativo |
-| /assets | Retorna uma lista com todos os ativos |
-
-<p align="right"><a href="#top">Voltar ao topo</a></p>
-
-<h2 id="decisions">Explicando decisões do projeto</h2>
 
 <details><summary>Ferramentas Utilizadas</summary>
 <p>
@@ -171,8 +182,72 @@ Algo interessante que me orgulho de ter feito, foi criar um script responsável 
 
 <br>
 
+<p align="right"><a href="#top">Voltar ao topo</a></p>
+
 ---
 
+<h2 id="functionalities">⚙️ Funcionalidades da aplicação</h2>
+
 <br>
+
+<h3>Clients:</h3>
+
+| Endpoint | Descrição |
+|---|---|
+| /register | Registra um cliente no banco de dados |
+| /login | Usado para logar um usuário, retorna um token |
+
+<br>
+
+<h3>Investments:</h3>
+
+| Endpoint | Descrição |
+|---|---|
+| /investments/buy | Registra a compra de um ativo, diminuindo o saldo disponível |
+| /investments/sell | Registra a venda de um ativo, aumentando o saldo disponível |
+
+<br>
+
+<h3>Account:</h3>
+
+| Endpoint | Descrição |
+|---|---|
+| /account/deposit | Realiza um depósito na conta |
+| /account/withdrawal | Realiza um saque da conta |
+| /account/balance | Retorna o saldo disponível e investido da conta |
+| /account/assets | Retorna uma lista com as ações no portfolio do cliente |
+| /account/transactions-statement | Retorna um extrato das transações efetuadas pela conta, recebe page e type no query param |
+| /account/investments-statement | Retorna um extrato dos investimentos efetuados pela conta, recebe page e type no query param |
+
+<br>
+
+<h3>Assets:</h3>
+
+| Endpoint | Descrição |
+|---|---|
+| /assets/:id | Retorna as informações sobre um ativo |
+| /assets | Retorna uma lista com todos os ativos |
+
+<p align="right"><a href="#top">Voltar ao topo</a></p>
+
+---
+
+<h2 id="nextSteps">Próximos passos</h2>
+
+<br>
+
+- [ ] Transportar a lógica para uma aplicação em Nest.js;
+- [ ] Criar testes de integração e E2E;
+- [ ] Adicionar tabela intermediária, guardando as ordens de compra e venda;
+- [ ] Adicionar lógica para calcular corretamente o preço médio;
+- [ ] Adicionar lógica para calcular a variação patrimonial e de um ativo, dado um período;
+- [ ] .....
+
+<br>
+
+<p align="right"><a href="#top">Voltar ao topo</a></p>
+
+---
+
 
 Projeto desenvolvido por [Leonardo Vogel](https://www.linkedin.com/in/leonardovogel/)
