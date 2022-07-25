@@ -84,12 +84,13 @@ $ yarn openmarket
 <details><summary>Utilizando VSCode + postman ou insomnia</summary>
 <p>
 
-<a href="/support/desafio-xpi-requests.json" download>Download Requests file</a>
-
-- Importe o arquivo com as requests no postman ou insomnia;
+- Importe o arquivo `/support/desafio-xpi-requests.json` com as requests no postman ou insomnia;
 
 - Configure as variáveis `base_url` (exemplo: `http://localhost:3000`) e `auth` com o token, depois que já tiver um.
 
+- Execute o comando `yarn openmarket` para iniciar o processo de atualização aleatória dos preços dos ativos.
+
+- Por fim, depois de interagir com a aplicação, execute o comando `yarn test` para executar os testes unitários.
 
 </p>
 </details>
