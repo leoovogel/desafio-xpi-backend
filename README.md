@@ -70,6 +70,24 @@ $ yarn openmarket
 <details><summary>Rodando local</summary>
 <p>
 
+- É necessário ter um banco de dados PostgreSQL, node 16+ e yarn instalados;
+
+```bash
+# Faça o clone do repositório e entre na pasta do projeto:
+$ git clone git@github.com:leonardoVogel/desafio-xpi-backend.git && cd desafio-xpi-backend
+
+# Renomeie o arquivo .env.example para .env (não é necessário alterar as variáveis, apenas se deseja executar a aplicação em outra porta):
+$ mv .env.example .env
+
+# Instale as dependências:
+$ yarn install
+
+# Configure a url do seu banco de dados no arquivo .env;
+
+# Por fim, rode a aplicação (esse comando já irá gerar o banco de dados e popular com alguns dados, sempre que ele for executado o banco será restaurado):
+$ yarn dev
+```
+
 </p>
 </details>
 
